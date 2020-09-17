@@ -43,12 +43,22 @@ public class GPXWaypoint: GPXElement, Codable {
         case DGPSid = "dgpsid"
         case ageofDGPSData = "ageofdgpsdata"
         case link
+        case power
+        case cadence
+        case speed = "spd"
+        case trip
+        case hrm
         case extensions
     }
-    
-    
-    
-    // MARK:- Attributes of a waypoint
+
+
+    public var power: Double?
+    public var cadence: Double?
+    public var speed: Double?
+    public var trip: Double?
+    public var hrm: Int?
+
+
     
     /// A value type for link properties (see `GPXLink`)
     ///
@@ -252,6 +262,11 @@ public class GPXWaypoint: GPXElement, Codable {
             case "dgpsid":      self.DGPSid = Convert.toInt(from: child.text)
             case "ageofdgpsid": self.ageofDGPSData = Convert.toDouble(from: child.text)
             case "extensions":  self.extensions = GPXExtensions(raw: child)
+            case "power":       self.power = Convert.toDouble(from: child.text)
+            case "cadence":     self.cadence = Convert.toDouble(from: child.text)
+            case "spd":         self.speed = Convert.toDouble(from: child.text)
+            case "trip":        self.trip = Convert.toDouble(from: child.text)
+            case "hrm":         self.hrm = Convert.toInt(from: child.text)
             default: continue
             }
         }
@@ -328,5 +343,11 @@ public class GPXWaypoint: GPXElement, Codable {
         if self.extensions != nil {
             self.extensions?.gpx(gpx, indentationLevel: indentationLevel)
         }
+        
+        self.addProperty(forDoubleValue: power, gpx: gpx, tagName: "power", indentationLevel: indentationLevel)
+        self.addProperty(forDoubleValue: cadence, gpx: gpx, tagName: "cadence", indentationLevel: indentationLevel)
+        self.addProperty(forDoubleValue: speed, gpx: gpx, tagName: "spd", indentationLevel: indentationLevel)
+        self.addProperty(forDoubleValue: trip, gpx: gpx, tagName: "trip", indentationLevel: indentationLevel)
+        self.addProperty(forIntegerValue: hrm, gpx: gpx, tagName: "hrm", indentationLevel: indentationLevel)
     }
 }
